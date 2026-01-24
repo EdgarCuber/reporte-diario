@@ -1,0 +1,735 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>Reporte del Día · 2026-01-24</title>
+  <style>
+    :root {
+      --bg: #070A12;
+      --card: rgba(255,255,255,0.06);
+      --card2: rgba(255,255,255,0.08);
+      --txt: rgba(255,255,255,0.92);
+      --muted: rgba(255,255,255,0.60);
+      --line: rgba(255,255,255,0.10);
+      --ok: #7CFF8A;
+      --warn: #FFD36E;
+      --danger: #FF5D6C;
+      --neutral: rgba(255,255,255,0.70);
+      --glow: rgba(124,255,138,0.25);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: radial-gradient(1200px 800px at 20% 0%, rgba(124,255,138,0.08), transparent 60%),
+                  radial-gradient(900px 600px at 80% 10%, rgba(255,211,110,0.07), transparent 55%),
+                  radial-gradient(900px 700px at 60% 90%, rgba(255,93,108,0.06), transparent 60%),
+                  var(--bg);
+      color: var(--txt);
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      -webkit-font-smoothing: antialiased;
+      padding: 18px 14px 40px;
+    }
+    .wrap { max-width: 980px; margin: 0 auto; }
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+    .brand {
+      display: flex; flex-direction: column; gap: 2px;
+    }
+    .brand .t {
+      font-weight: 800;
+      font-size: 18px;
+      letter-spacing: 0.4px;
+    }
+    .brand .d {
+      font-size: 13px;
+      color: var(--muted);
+    }
+    .chip {
+      padding: 8px 10px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255,255,255,0.04);
+      color: var(--muted);
+      font-size: 12px;
+      white-space: nowrap;
+    }
+    .hud {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin: 10px 0 14px;
+    }
+    @media (min-width: 720px) {
+      .hud { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    }
+    .card {
+      background: linear-gradient(180deg, rgba(255,255,255,0.09), rgba(255,255,255,0.05));
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 12px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.30);
+      backdrop-filter: blur(10px);
+    }
+    .kpi .k {
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 6px;
+    }
+    .kpi .v {
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: 0.2px;
+    }
+    .kpi .s {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+    @media (min-width: 900px) {
+      .grid { grid-template-columns: 1.1fr 0.9fr; align-items: start; }
+    }
+    .title {
+      font-weight: 900;
+      font-size: 14px;
+      letter-spacing: 0.3px;
+    }
+    .subtitle {
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 2px;
+    }
+    .section-head {
+      display:flex; align-items:flex-end; justify-content:space-between; gap:10px;
+      margin-bottom: 10px;
+    }
+    .section-hint {
+      margin: 10px 0 8px;
+      padding: 8px 10px;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      font-size: 12px;
+      color: var(--muted);
+      background: rgba(255,255,255,0.03);
+    }
+    .section-hint.ok { border-color: rgba(124,255,138,0.22); }
+    .section-hint.warn { border-color: rgba(255,211,110,0.25); }
+    .section-hint.danger { border-color: rgba(255,93,108,0.25); }
+
+    .li {
+      display:flex; align-items:center; justify-content:space-between;
+      gap: 10px;
+      padding: 10px 10px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(0,0,0,0.15);
+      margin-bottom: 8px;
+    }
+    .li .sub { color: var(--muted); font-size: 12px; margin-top: 2px; }
+    .li .qty { font-weight: 900; }
+    .badge {
+      display:inline-flex; align-items:center; gap:6px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.05);
+      color: var(--muted);
+      margin-top: 6px;
+      justify-content: center;
+    }
+    .badge.ok { color: var(--ok); border-color: rgba(124,255,138,0.25); box-shadow: 0 0 0 3px var(--glow); }
+    .badge.warn { color: var(--warn); border-color: rgba(255,211,110,0.25); }
+    .badge.danger { color: var(--danger); border-color: rgba(255,93,108,0.25); }
+
+    .bars {
+      display:flex; flex-direction:column; gap:10px;
+    }
+    .bar {
+      border:1px solid var(--line);
+      border-radius: 14px;
+      padding: 10px;
+      background: rgba(255,255,255,0.03);
+    }
+    .bar-top {
+      display:flex; justify-content:space-between; align-items:center;
+      font-size: 12px; color: var(--muted);
+      margin-bottom: 8px;
+    }
+    .track {
+      height: 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.08);
+      overflow: hidden;
+    }
+    .fill {
+      height:100%;
+      width: 50%;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.35);
+    }
+    .empty {
+      padding: 14px 12px;
+      border-radius: 14px;
+      border: 1px dashed rgba(255,255,255,0.18);
+      color: var(--muted);
+      background: rgba(0,0,0,0.15);
+      font-size: 13px;
+    }
+    details {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 10px 10px;
+      background: rgba(255,255,255,0.03);
+      
+    }
+    summary {
+      cursor:pointer;
+      font-weight: 800;
+      color: var(--muted);
+      outline: none;
+    }
+    details.more {
+    margin-top: 10px;
+    }
+    details.more summary {
+    padding: 6px 2px;
+    }
+    .grid2 {
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    @media (min-width: 720px) {
+      .grid2 { grid-template-columns: 1fr 1fr; }
+    }
+    .stat {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 10px;
+      background: rgba(255,255,255,0.03);
+    }
+    .stat.big .v { font-size: 20px; font-weight: 900; }
+    .stat .k { font-size: 12px; color: var(--muted); margin-bottom: 6px; }
+    .stat .v { font-size: 14px; font-weight: 800; }
+    .table {
+      border:1px solid var(--line);
+      border-radius: 14px;
+      overflow:hidden;
+      background: rgba(0,0,0,0.12);
+      margin-bottom: 10px;
+    }
+    .tr {
+      display:grid;
+      grid-template-columns: 1.1fr 1fr 1fr 1fr;
+      gap: 8px;
+      padding: 10px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      font-size: 13px;
+      align-items:center;
+    }
+    .tr.head {
+      font-size: 12px;
+      color: var(--muted);
+      background: rgba(255,255,255,0.04);
+      font-weight: 800;
+    }
+    .tr.total {
+      font-weight: 900;
+      background: rgba(255,255,255,0.04);
+    }
+    .ok { color: var(--ok); }
+    .warn { color: var(--warn); }
+    .danger { color: var(--danger); }
+    .neutral { color: var(--neutral); }
+    .footer {
+      margin-top: 14px;
+      color: var(--muted);
+      font-size: 12px;
+      text-align:center;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="topbar">
+      <div class="brand">
+        <div class="t">📊 Reporte del Día</div>
+        <div class="d">sábado 24 de enero de 2026</div>
+      </div>
+      <div class="chip">FresaCake</div>
+    </div>
+
+    <div class="hud">
+      <div class="card kpi">
+        <div class="k">Ventas brutas</div>
+        <div class="v">$987.00</div>
+        <div class="s">Efectivo $987.00 · Tarjeta $0.00</div>
+      </div>
+      <div class="card kpi">
+        <div class="k">Ganancia</div>
+        <div class="v">$417.61</div>
+        <div class="s">Merma impacto $-73.12</div>
+      </div>
+      <div class="card kpi">
+        <div class="k">Tickets</div>
+        <div class="v">4</div>
+        <div class="s">Promedio $246.75</div>
+      </div>
+      <div class="card kpi">
+        <div class="k">Unidades</div>
+        <div class="v">27.00</div>
+        <div class="s">Operación del día</div>
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="card">
+        <div class="section-head">
+          <div>
+            <div class="title">🧾 Vendido del día</div>
+            <div class="subtitle">Top productos + detalle</div>
+          </div>
+          <div class="chip">6 productos vendidos</div>
+        </div>
+
+        
+        <div class="li">
+          <div class="li-left">
+            <div class="title">Cheesecake Caramelo</div>
+            <div class="sub">Total: $405.00 · Ganancia: $153.90</div>
+          </div>
+          <div class="li-right">
+            <div class="qty">× 9.00</div>
+            <span class="badge ok">TOP</span>
+          </div>
+        </div>
+        
+        <div class="li">
+          <div class="li-left">
+            <div class="title">Cheesecake Frambuesa</div>
+            <div class="sub">Total: $360.00 · Ganancia: $164.00</div>
+          </div>
+          <div class="li-right">
+            <div class="qty">× 8.00</div>
+            <span class="badge ok">TOP</span>
+          </div>
+        </div>
+        
+        <div class="li">
+          <div class="li-left">
+            <div class="title">Madalenas Corazón</div>
+            <div class="sub">Total: $90.00 · Ganancia: $27.75</div>
+          </div>
+          <div class="li-right">
+            <div class="qty">× 5.00</div>
+            <span class="badge ok">TOP</span>
+          </div>
+        </div>
+        
+        <div class="li">
+          <div class="li-left">
+            <div class="title">Donitas x10</div>
+            <div class="sub">Total: $70.00 · Ganancia: $47.80</div>
+          </div>
+          <div class="li-right">
+            <div class="qty">× 2.00</div>
+            <span class="badge ok">TOP</span>
+          </div>
+        </div>
+        
+        <div class="li">
+          <div class="li-left">
+            <div class="title">Muffin </div>
+            <div class="sub">Total: $50.00 · Ganancia: $20.03</div>
+          </div>
+          <div class="li-right">
+            <div class="qty">× 2.00</div>
+            <span class="badge ok">TOP</span>
+          </div>
+        </div>
+        
+
+        <details>
+          <summary>Ver todo (1 más)</summary>
+          <div style="margin-top:10px;">
+            
+        <div class="li">
+          <div class="li-left">
+            <div class="title">Galletas chispas chocolate</div>
+            <div class="sub">Total: $12.00 · Ganancia: $4.13</div>
+          </div>
+          <div class="li-right">
+            <div class="qty">× 1.00</div>
+            
+          </div>
+        </div>
+        
+          </div>
+        </details>
+
+        <div style="margin-top:12px;" class="bars">
+          <div class="bar">
+            <div class="bar-top"><span>Efectivo</span><span>100.0%</span></div>
+            <div class="track"><div class="fill" style="width:100.0%;"></div></div>
+          </div>
+          <div class="bar">
+            <div class="bar-top"><span>Tarjeta</span><span>0.0%</span></div>
+            <div class="track"><div class="fill" style="width:0.0%;"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="section-head">
+          <div>
+            <div class="title">📦 Inventario Restaurante</div>
+            <div class="subtitle">Checklist operativo (stock)</div>
+          </div>
+          <div class="chip">19 ítems</div>
+        </div>
+
+        <div class="section-hint danger">❗ Sin stock (Restaurante)</div>
+        <div class="li">
+          <div class="li-left">
+            <div class="title">Cheesecake Caramelo</div>
+            
+          </div>
+          <div class="li-right">
+            <div class="qty">× 0.00</div>
+            <span class="badge danger">SIN STOCK</span>
+          </div>
+        </div>
+        
+        <div class="li">
+          <div class="li-left">
+            <div class="title">Gelatina Crema </div>
+            
+          </div>
+          <div class="li-right">
+            <div class="qty">× 0.00</div>
+            <span class="badge danger">SIN STOCK</span>
+          </div>
+        </div>
+        
+        <div class="li">
+          <div class="li-left">
+            <div class="title">Gelatina Leche</div>
+            
+          </div>
+          <div class="li-right">
+            <div class="qty">× 0.00</div>
+            <span class="badge danger">SIN STOCK</span>
+          </div>
+        </div>
+        
+        <div class="li">
+          <div class="li-left">
+            <div class="title">Pastel de Zanahoria</div>
+            
+          </div>
+          <div class="li-right">
+            <div class="qty">× 0.00</div>
+            <span class="badge danger">SIN STOCK</span>
+          </div>
+        </div>
+        
+        <details class="more">
+        <summary>Ver más (2 más)</summary>
+        <div style="margin-top:10px;">
+            
+        <div class="li">
+          <div class="li-left">
+            <div class="title">Pastel Matilda</div>
+            
+          </div>
+          <div class="li-right">
+            <div class="qty">× 0.00</div>
+            <span class="badge danger">SIN STOCK</span>
+          </div>
+        </div>
+        
+        <div class="li">
+          <div class="li-left">
+            <div class="title">Pay de Limón</div>
+            
+          </div>
+          <div class="li-right">
+            <div class="qty">× 0.00</div>
+            <span class="badge danger">SIN STOCK</span>
+          </div>
+        </div>
+        
+        </div>
+        </details>
+        <div class="section-hint ok">✅ En stock</div>
+        <div class="li">
+          <div class="li-left">
+            <div class="title">BubuLubu Ice 25 g</div>
+            
+          </div>
+          <div class="li-right">
+            <div class="qty">× 8.00</div>
+            
+          </div>
+        </div>
+        
+        <div class="li">
+          <div class="li-left">
+            <div class="title">Café Capuchino Nescafe</div>
+            
+          </div>
+          <div class="li-right">
+            <div class="qty">× 19.00</div>
+            
+          </div>
+        </div>
+        
+        <div class="li">
+          <div class="li-left">
+            <div class="title">Café Chico</div>
+            
+          </div>
+          <div class="li-right">
+            <div class="qty">× 189.00</div>
+            
+          </div>
+        </div>
+        
+        <div class="li">
+          <div class="li-left">
+            <div class="title">Cheesecake Frambuesa</div>
+            
+          </div>
+          <div class="li-right">
+            <div class="qty">× 2.00</div>
+            
+          </div>
+        </div>
+        
+        <details class="more">
+        <summary>Ver más (9 más)</summary>
+        <div style="margin-top:10px;">
+            
+        <div class="li">
+          <div class="li-left">
+            <div class="title">Chocolate</div>
+            
+          </div>
+          <div class="li-right">
+            <div class="qty">× 190.00</div>
+            
+          </div>
+        </div>
+        
+        <div class="li">
+          <div class="li-left">
+            <div class="title">Donitas x10</div>
+            
+          </div>
+          <div class="li-right">
+            <div class="qty">× 7.00</div>
+            
+          </div>
+        </div>
+        
+        <div class="li">
+          <div class="li-left">
+            <div class="title">Galletas chispas chocolate</div>
+            
+          </div>
+          <div class="li-right">
+            <div class="qty">× 26.00</div>
+            
+          </div>
+        </div>
+        
+        <div class="li">
+          <div class="li-left">
+            <div class="title">Gelatina Agua</div>
+            
+          </div>
+          <div class="li-right">
+            <div class="qty">× 1.00</div>
+            
+          </div>
+        </div>
+        
+        <div class="li">
+          <div class="li-left">
+            <div class="title">Madalenas Corazón</div>
+            
+          </div>
+          <div class="li-right">
+            <div class="qty">× 12.00</div>
+            
+          </div>
+        </div>
+        
+        <div class="li">
+          <div class="li-left">
+            <div class="title">Mars Chocolate</div>
+            
+          </div>
+          <div class="li-right">
+            <div class="qty">× 10.00</div>
+            
+          </div>
+        </div>
+        
+        <div class="li">
+          <div class="li-left">
+            <div class="title">Muffin </div>
+            
+          </div>
+          <div class="li-right">
+            <div class="qty">× 4.00</div>
+            
+          </div>
+        </div>
+        
+        <div class="li">
+          <div class="li-left">
+            <div class="title">Sopa Maruchan Camaron Limon Habanero</div>
+            
+          </div>
+          <div class="li-right">
+            <div class="qty">× 12.00</div>
+            
+          </div>
+        </div>
+        
+        <div class="li">
+          <div class="li-left">
+            <div class="title">Té</div>
+            
+          </div>
+          <div class="li-right">
+            <div class="qty">× 196.00</div>
+            
+          </div>
+        </div>
+        
+        </div>
+        </details>
+        
+      </div>
+    </div>
+
+    <div style="height:12px;"></div>
+
+    <div class="grid">
+      <div class="card">
+        <div class="section-head">
+          <div>
+            <div class="title">🗑️ Mermas del día</div>
+            <div class="subtitle">Impacto y razones</div>
+          </div>
+        </div>
+        
+        <div class="li">
+          <div class="li-left">
+            <div class="title">Madalenas Corazón</div>
+            <div class="sub">Impacto: $-37.35 · </div>
+          </div>
+          <div class="li-right">
+            <div class="qty">× 3.00</div>
+            <span class="badge danger">MERMA</span>
+          </div>
+        </div>
+        
+        <div class="li">
+          <div class="li-left">
+            <div class="title">Cheesecake Caramelo</div>
+            <div class="sub">Impacto: $-27.90 · </div>
+          </div>
+          <div class="li-right">
+            <div class="qty">× 1.00</div>
+            <span class="badge danger">MERMA</span>
+          </div>
+        </div>
+        
+        <div class="li">
+          <div class="li-left">
+            <div class="title">Galletas chispas chocolate</div>
+            <div class="sub">Impacto: $-7.88 · </div>
+          </div>
+          <div class="li-right">
+            <div class="qty">× 1.00</div>
+            <span class="badge danger">MERMA</span>
+          </div>
+        </div>
+        
+      </div>
+
+      <div class="card">
+        <div class="section-head">
+          <div>
+            <div class="title">💰 Corte de caja</div>
+            <div class="subtitle">Contado vs Calculado</div>
+          </div>
+        </div>
+        
+        <div class="grid2">
+          <div class="stat">
+            <div class="k">Usuario / Caja</div>
+            <div class="v">edgar · Caja 1</div>
+          </div>
+          <div class="stat">
+            <div class="k">Ventas / Ganancia (corte)</div>
+            <div class="v">$987.00 · $344.48</div>
+          </div>
+        </div>
+
+        <div class="card-inner">
+          <div class="table">
+            <div class="tr head"><div>Método</div><div>Contado</div><div>Calculado</div><div>Diferencia</div></div>
+
+            <div class="tr">
+              <div>Efectivo</div>
+              <div>$987.00</div>
+              <div>$987.00</div>
+              <div class="neutral">$0.00</div>
+            </div>
+
+            <div class="tr">
+              <div>Tarjeta</div>
+              <div>$0.00</div>
+              <div>$0.00</div>
+              <div class="neutral">$0.00</div>
+            </div>
+
+            <div class="tr total">
+              <div>Total</div>
+              <div>$987.00</div>
+              <div>$987.00</div>
+              <div class="neutral">$0.00</div>
+            </div>
+          </div>
+
+          <div class="stat big">
+            <div class="k">Ingresado a caja fuerte</div>
+            <div class="v">$987.00</div>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+
+    <div class="footer">
+      Generado por EdgarCuber Digital Solutions POS · HTML mobile-first · Para mi princesa Arlet
+    </div>
+  </div>
+</body>
+</html>
